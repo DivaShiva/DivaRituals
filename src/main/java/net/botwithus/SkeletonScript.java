@@ -205,7 +205,8 @@ public class SkeletonScript extends LoopingScript {
             return false;
         }
         
-        SceneObject pedestal = SceneObjectQuery.newQuery().name("Pedestal").option("Repair all").results().nearest();
+        // Try to find pedestal with "Repair all" option
+        SceneObject pedestal = SceneObjectQuery.newQuery().option("Repair all").results().nearest();
         
         if (pedestal != null) {
             println("Repairing all components on pedestal...");
@@ -215,8 +216,9 @@ public class SkeletonScript extends LoopingScript {
                 return true;
             }
         } else {
-            println("Pedestal not found for repair");
+            println("Pedestal not found for repair - skipping repair attempt");
             needsRepair = false;
+            startAttempts = 0; // Reset attempts since we can't repair
         }
         
         return false;
